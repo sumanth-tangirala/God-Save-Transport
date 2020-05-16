@@ -9,5 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="mapsjs-core" level="application" />
+    <orderEntry type="library" name="mapsjs-service" level="application" />
+    <orderEntry type="library" name="mapsjs-ui" level="application" />
+    <orderEntry type="library" name="mapsjs-mapevents" level="application" />
   </component>
 </module>
