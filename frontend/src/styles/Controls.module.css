@@ -1,0 +1,14 @@
+.menuContainer {
+	/*width: 256px;*/
+	display: flex;
+	flex-direction: column;
+	background-color: black;
+	position:absolute;
+	z-index: 24;
+}
+
+.menuButton{
+	margin-bottom: 8px;
+	justify-content: flex-end;
+	background: transparent;
+}
