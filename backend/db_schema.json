@@ -1,0 +1,23 @@
+{
+  "routes":{
+      "1":["stop1, stop2, stop3"],
+      "2":["stop1, stop2, stop3"]
+  },
+
+  "stops":{
+    "oxford_street":{
+      "earthing":"fadf",
+      "northing":"fsdf",
+      "lat":"fdaf",
+      "long":"fsf",
+      "routes":["1", "2"]
+    },
+    "worthershire-on-sea-innit-tea":{
+      "earthing":"fadf",
+      "northing":"fsdf",
+      "lat":"fdaf",
+      "long":"fsf",
+      "routes":["1"]
+    }
+  }
+}
