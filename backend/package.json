@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/HtnamuS/God-Save-Transport#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1",
     "firebase": "^7.14.4",
+    "lodash": "^4.17.15",
     "start": "^5.1.0"
   },
   "description": ""

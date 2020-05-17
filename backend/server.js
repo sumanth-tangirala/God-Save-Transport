@@ -18,9 +18,11 @@ var database = firebase.database();
 
 // Define routers
 const metadataRouter = require('./routes/metadataRouter.js');
+const routeidRouter = require('./routes/routeidRouter.js')
 
 // Link routers with routes
-app.use('/', metadataRouter); // temp: can delete once hooked up with react
+//app.use('/', routeidRouter); // temp: can delete once hooked up with react
+app.use('/routes', routeidRouter);;
 app.use('/metadata', metadataRouter);
 
 // Start server
