@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
-const firebase = require('firebase/database');
+const firebase = require('firebase');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,21 +11,22 @@ var config = {
   apiKey: "AIzaSyAQFvW9xPnMyPtNqw0dyZBTg_UyPgPhHWA",
   authDomain: "god-save-transport-c8155.firebaseapp.com",
   databaseURL: "https://god-save-transport-c8155.firebaseio.com/",
-  storageBucket: "bucket.appspot.com"
+  storageBucket: "god-save-transport-c8155.appspot.com"
 };
 firebase.initializeApp(config);
 var database = firebase.database();
 
 // Define routers
-const main = require('./routes/main.js');
+const metadataRouter = require('./Routes/metadataRouter.js');
 
 // Link routers with routes
-app.use('/', main);
+app.use('/', metadataRouter); // temp: can delete once hooked up with react
+app.use('/metadata', metadataRouter);
 
 // Start server
-const server = app.listen(8080, () => {
-  const host = server.address().address;
-  const port = server.address().port;
-
-  console.log(`Example app listening at http://${host}:${port}`);
+const server = http.createServer(app);
+const hostname = 'localhost';
+const port = 3000;
+server.listen(port,hostname,()=>{
+	console.log(`Server running at http://${hostname}:${port}`);
 });
