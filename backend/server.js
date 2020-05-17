@@ -27,10 +27,14 @@ app.use('/routes', routeidRouter);
 app.use('/metadata', metadataRouter);
 app.use('/topNums', topRouter);
 
-// Start server
-const server = http.createServer(app);
-const hostname = 'localhost';
-const port = 3000;
-server.listen(port,hostname,()=>{
-	console.log(`Server running at http://${hostname}:${port}`);
+app.use(express.static(__dirname+'/public'));
+
+app.use((req, res, next)=>{
+	res.statusCode = 200;
+	res.setHeader('Content-Type','text/html');
+	res.end('<html><body><h1>Express Server running</h1></body></html>');
 });
+
+// start the server listening for requests
+app.listen(process.env.PORT || 3000,
+	() => console.log("Server is running..."));
