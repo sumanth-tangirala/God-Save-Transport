@@ -6,6 +6,14 @@ const firebase = require('firebase');
 const app = express();
 app.use(bodyParser.json());
 
+var cors = require('cors');
+app.use(cors({origin:true, credentials:true}));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // Define Firebase DB
 var config = {
   apiKey: "AIzaSyAQFvW9xPnMyPtNqw0dyZBTg_UyPgPhHWA",
@@ -26,14 +34,6 @@ const topRouter = require('./routes/topRouter.js');
 app.use('/routes', routeidRouter);
 app.use('/metadata', metadataRouter);
 app.use('/topNums', topRouter);
-
-app.use(express.static(__dirname+'/public'));
-
-app.use((req, res, next)=>{
-	res.statusCode = 200;
-	res.setHeader('Content-Type','text/html');
-	res.end('<html><body><h1>Express Server running</h1></body></html>');
-});
 
 // start the server listening for requests
 app.listen(process.env.PORT || 3000,

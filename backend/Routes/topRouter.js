@@ -30,17 +30,19 @@ function computeFFSum(data){
 	}
 };
 
-var promise = new Promise(function(resolve, reject))
+var routeNum;
+var arrDicts = [];
+const promisesArray = [];
+var k = 1;
 
-var getTopNums(routeNum){
+function getTopNums(res,routeNum){
     var dict2 = [];
     // get ref to specific route ID
     var ref = firebase.database().ref('/routes/' + routeNum).orderByKey();
-    ref.on("value", function(routeSnapshot) {
+    ref.once("value")
+    .then(function(routeSnapshot) {
         // loop through the stops for that specific route
         let index = 0;
-
-        let promiseArray = [];
         routeSnapshot.forEach( function(stopSnapshot) {
             var dictEntry2 = {
                 StopName: "",
@@ -60,45 +62,57 @@ var getTopNums(routeNum){
                 dictEntry2.StopName = stopInfoSnapshot.key;
                 dictEntry2.Lat = value["lat"];
                 dictEntry2.Long = value["lng"];
-                
+
                 return axios.get('https://traffic.ls.hereapi.com/traffic/6.2/flow.json?apiKey=wb620JMpEXicArNCaVP9aNNFOejRxRpKl7STGIkeGmw&prox='+value['lat']+','+value['lng']+','+'1')
             }).then(response => {
                 var vals = computeFFSum(response.data);
                 var scaling = routeSnapshot.numChildren() - stopIndex;
                 var norm_factor = routeSnapshot.numChildren() * (routeSnapshot.numChildren() + 1)/2;
-                //console.log(scaling);
-                //console.log(norm_factor);
                 dictEntry2.XFactor_pre_norm = (vals.sum / vals.count) * scaling;
                 dictEntry2.XFactor_post_norm = (vals.sum / vals.count) * scaling / norm_factor;
                 dictEntry2.index = stopIndex;
-                console.log(dictEntry2);
+                // console.log(dictEntry2);
                 dict2.push(dictEntry2);
+                if(stopIndex == routeSnapshot.numChildren()){
+                    arrDicts.push(dict2);
+                }
             })
             .catch(error => {
                 console.log(error.message);
             });
-            promiseArray.push(promise);
+            promisesArray.push(promise)
             index++;
+            //console.log("promise array size: " + promisesArray.length);
+
         })
-        Promise.all(promiseArray).then(() => {
+        Promise.all(promisesArray).then(() => {
+            console.log("after resolve all promise array size: " + promisesArray.length);
             console.log("about to return ############");
-            dict2.sort(function(a,b){return a.index - b.index});
-            arrDicts.push(dict2);
+            //dict2.sort(function(a,b){return a.index - b.index});
+            // console.log(arrDicts);
+            if(k==1){
+                console.log(arrDicts.length);
+                res.send(arrDicts);
+                k--;
+            }
+            else{
+                console.log("value of k " + k + "not sendig");
+            }
+
+        })
+        .catch(err => {
+            console.log(err.message);
         })
     })
 }
 
-var i;
-var arrDicts = [];
 topRouter.route('/:topNum')
     .get((req,res,next)=>{
-        console.log("outside");
-        for(i = 1; i < 2; i++){
-            getTopNums(i, arrDicts);
-            //arrDicts.push(getTopNums(i));
+
+        for(routeNum= 1; routeNum < 2; routeNum++){
+            getTopNums(res,routeNum);
         }
-        console.log("outside 2");
-        res.send(arrDicts);
+
     });
 
 module.exports = topRouter;

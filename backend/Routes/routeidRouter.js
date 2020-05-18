@@ -46,7 +46,8 @@ routeidRouter.route('/:routeid')
 					Long: "",
 					XFactor_pre_norm: "",
 					XFactor_post_norm: "",
-					index:""
+					index:"",
+					intensity:""
 				}
 				var stop = stopSnapshot.val();
 				let stopIndex = index;
@@ -58,7 +59,7 @@ routeidRouter.route('/:routeid')
 					dictEntry2.StopName = stopInfoSnapshot.key;
 					dictEntry2.Lat = value["lat"];
 					dictEntry2.Long = value["lng"];
-					
+
 					return axios.get('https://traffic.ls.hereapi.com/traffic/6.2/flow.json?apiKey=wb620JMpEXicArNCaVP9aNNFOejRxRpKl7STGIkeGmw&prox='+value['lat']+','+value['lng']+','+'1')
 				}).then(response => {
 					var vals = computeFFSum(response.data);
@@ -68,6 +69,19 @@ routeidRouter.route('/:routeid')
 					console.log(norm_factor);
 					dictEntry2.XFactor_pre_norm = (vals.sum / vals.count) * scaling;
 					dictEntry2.XFactor_post_norm = (vals.sum / vals.count) * scaling / norm_factor;
+					if(dictEntry2.XFactor_post_norm <= 0.25){
+						dictEntry2.intensity = 0;
+					}
+					else if(dictEntry2.XFactor_post_norm <= 0.8){
+						dictEntry2.intensity = 1;
+					}
+					else if(dictEntry2.XFactor_post_norm <= 1.3){
+						dictEntry2.intensity =3;
+					}
+					else{
+						dictEntry2.intensity = 2;
+					}
+
 					dictEntry2.index = stopIndex;
 
 					dict2.push(dictEntry2);
