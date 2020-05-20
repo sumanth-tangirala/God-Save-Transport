@@ -2,9 +2,9 @@ import pyrebase
 import csv, requests, json
 
 SEARCH_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?key={}&query={}"
-GOOGLE_KEY = 'AIzaSyAkUsj_AEvDVpir5aRR4eU526u9KfIF_U0'
+#GOOGLE_KEY
 
-bad_chars = ['<', '>', '#', '[', ']', '.', ',', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 
+bad_chars = ['<', '>', '#', '[', ']', '.', ',', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
              '-', '_', ':', ';', '"', '/']
 
 # set up acccess to Firebase DB
