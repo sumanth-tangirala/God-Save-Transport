@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase": "^7.14.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "start": "^5.1.0"
   },
   "description": ""
